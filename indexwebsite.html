@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+
+<body>
+<canvas id="canvas" width="1350" height="621" style="border:1px solid #000000;" onclick="canvasclick()">
+
+</canvas>
+<form method="POST" enctype="multipart/form-data" action="Canvaslab.php">
+<input type="file" name="myfile">
+<input type="submit" name="submit" value="Upload Now">
+</form>
+<script>
+var prevx;
+var prevy;
+var points = [];
+function point (x, y, connections) {
+    this.x = x;
+    this.y = y;
+    this.connections = connections;
+    this.getx = function() {
+        return this.x;
+    };
+    this.gety = function() {
+    	return this.y;
+    }
+    this.getprev = function() {
+    	return this.connections;
+    }
+}
+function canvasclick(){
+ 	var canvas = document.getElementById("canvas");
+	var canvas_context = canvas.getContext("2d");
+	canvas_context.beginPath();
+	var xPosition = event.x - canvas.offsetLeft;
+	var yPosition = event.y - canvas.offsetTop;
+	canvas_context.arc(xPosition, yPosition, 5, 0, 2*Math.PI);
+	canvas_context.fillStyle = 'blue';
+	canvas_context.fill();
+	canvas_context.stroke();
+	var connections = [];
+	if(prevx != null && prevy != null){
+		lastpos = points.push(point(xPosition, yPosition, connections));
+		connections.push(points[lastpos - 1]);
+		canvas_context.moveTo(xPosition, yPosition);
+		canvas_context.lineTo(prevx, prevy);
+		canvas_context.stroke();
+	}
+	prevx = xPosition;
+	prevy = yPosition;
+}
+</script>
+
+</body>
+</html>

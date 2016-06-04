@@ -1,0 +1,29 @@
+
+body {
+    background-image: url("http://marshall.org/wp-content/themes/marshall/img/featured-space-policy.jpg");
+    background-repeat: no-repeat;
+     background-size: 100%;
+}
+
+div .continer{
+  margin-top:  3030px;
+}
+
+div .account-wall{
+  margin-top: 50px;
+}
+
+.container input[type=text], input[type=password] {
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.form-signin{
+  margin-top: 100px;
+   border-radius: 25px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 5px;
+  padding-bottom: 20px;
+  background-color: white;
+}

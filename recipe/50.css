@@ -1,0 +1,111 @@
+body {
+    background-color: #ADD8E6;
+    background: -webkit-linear-gradient(left, rgba(255,90,90,1),rgba(114,188,212,1));
+    background: -o-linear-gradient(right, rgba(255,90,90,1),rgba(114,188,212,1));
+    background: -moz-linear-gradient(right, rgba(255,90,90,1),rgba(114,188,212,1));
+    background: linear-gradient(to right, rgba(255,90,90,1),rgba(114,188,212,1));
+}
+
+h1,h2{
+    font-family: 'Indie Flower',serif;
+    text-align: center;
+    color: white;
+    font-size: 325%;
+}
+
+h2{
+    font-size: 200%;
+}
+
+#login,#register {
+    background: #65a9d7;
+    border: solid 0px #1e90ff;
+    border-radius: 50px;
+    -moz-border-radius: 50px;
+    -webkit-border-radius: 50px;
+    color: #ffffff;
+    font-size: 175%;
+    font-family: 'Indie Flower',serif;
+    padding: 10px 20px;
+}
+
+#login:hover,#register:hover {
+    background: #c42f2f;
+}
+
+#login:active,#register:active {
+    background: #FF9200;
+}
+
+#login:focus,#register:focus {
+    outline: 0 !important;
+}
+
+
+#anim {
+    font-family: 'Indie Flower',serif;
+    color: #4AC948;
+    width: 0px;
+    height: 0px;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    background-color: red;
+}
+
+#helpOne,#helpTwo,#helpThree {
+    opacity: 0;
+    font-family: 'Indie Flower',serif;
+    color: white;
+    position: absolute;
+    font-size: 225%;
+    text-align: center;
+    width: 100%;
+}
+
+#help {
+    font-family: 'Indie Flower',serif;
+    color: #ffffff;
+    font-size: 130%;
+    padding-top: 8px;
+    padding-bottom: 3px;
+    padding-right: 18px;
+    padding-left: 18px;
+    border: solid 0px #1e90ff;
+    -moz-border-radius: 40px;
+    -webkit-border-radius: 40px;
+    border-radius: 40px;
+    background: #65a9d7;
+    float: left;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
+#help:hover {
+    background: #c42f2f;
+}
+
+#help:active {
+    background: #FF9200;
+}
+
+#help:focus {
+    outline: 0 !important;
+}
+
+#exitButton {
+    font-family: 'Indie Flower',serif;
+    color: #ffffff;
+    font-size: 130%;
+    padding-left: 25px;
+    padding-right: 25px;
+    border: solid 3px #ffffff;
+    -moz-border-radius: 40px;
+    -webkit-border-radius: 40px;
+    border-radius: 40px;
+    background: #4AC948;
+}
+
+#exitButton:focus {
+    outline: 0 !important;
+}

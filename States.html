@@ -1,0 +1,179 @@
+	<!doctype html>
+	<html>
+	<head>
+	<style>
+	p{
+	text-align:center;
+	margin-bottom: .25cm;
+	}
+	#description{
+		margin-top: 0cm;
+		margin-bottom: 0cm;
+	}
+	#timer{
+	margin-top: .35cm;
+	}
+	</style>
+		<h1 align="center">Naming the U.S. States <br>
+			<img src="America.png" alt="America" align="middle"></h1>
+			<title>
+				States
+			</title>
+	</head>
+	<body>
+	<p id=inputedstates>You have entered: </p>
+	<p id=correctstates style="color:red;font-size:200%">0/50 States have been entered</p>
+	<center>
+	<input type=text name=states id=states autofocus onkeydown="timerepeater()" onkeyup="stateschecker()">
+	<br>
+	<button accesskey = 'r' onclick="resetpage()"><u>R</u>eset</button>
+</center>
+	<br>
+	<p id=description>(State abbreviations must be in all caps)</p>
+	<p id=timer style="color:blue;font-size:500%">05:00</p>
+	<script type = 'text/javascript'>
+	function stopRKey(evt) { 
+		  var evt = (evt) ? evt : ((event) ? event : null); 
+		  var node = (evt.target) ? evt.target : ((evt.srcElement) ? evt.srcElement : null); 
+		  if ((evt.keyCode == 13) && (node.type=="text"))  {return false;} 
+	} 
+	document.onkeypress = stopRKey; 
+	textbox = document.getElementById("states"); 
+	textbox.focus();
+	var states = ["Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware",
+	"Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa",
+	"Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota",
+	"Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico",
+	"New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island",
+	"South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington",
+	"West Virginia", "Wisconsin", "Wyoming"];
+	var statesabbreviations = ['AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA', 'HI', 'ID', 
+	'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 
+	'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY']
+	var inputedstates = [];
+	var sec = 300;
+	var start = false;
+	var correctStates = 0;
+	var timer;
+	function timerepeater() {
+	  if(!start){
+		start = true;
+		timer = setInterval(function(){
+		sec--;
+		if(sec < 1){
+			stateschecker();
+			loser();
+		}
+		var m = sec/60;
+		var s = sec%60;
+		m = parseInt(m);
+		s = parseInt(s);
+		m = checkTimes(m);
+		s = checkTimes(s);
+		document.getElementById("timer").innerHTML = m + ":" + s;
+		stateschecker();},1000);
+		}
+	}
+	function stateschecker(){
+		if(sec < 1){
+			loser();
+		}
+		var inputstate = textbox.value;
+		var statenumber = arraycontains(inputstate);
+	/*	if(inputstate == "autolose"){
+		loser();
+		}
+		if(inputstate == "autowin"){
+			winner();
+		}*/
+		if(statenumber > -1){
+		inputedstates.push(states[statenumber]);
+		inputedstates.sort();
+		var statesentered = enteredStatesToString();
+		states[statenumber] = "zzzzzzzz";
+		statesabbreviations[statenumber] = "zzzzzzzz";
+		correctStates++;
+		document.getElementById("correctstates").innerHTML = correctStates + "/50 States have been entered";
+		document.getElementById("inputedstates").innerHTML = "You have entered: " + statesentered;
+		textbox.value = "";
+		if(correctStates == 50){
+		winner();
+		}
+		}
+		else if(inputedstatescontains(inputstate) != -1){
+		textbox.value = "";
+		}
+	}
+	function checkTimes(i) {
+		if (i < 10) {i = "0" + i};
+		return i;
+	}
+	function inputedstatescontains(inputstate){
+	   for (i in states) {
+		if (inputedstates[i].toLowerCase() == inputstate.toLowerCase()){
+		   return i;
+		   }
+		   return -1;
+	}
+	}
+	function arraycontains(inputstate){
+	   for (i in states) {
+	   	if(statesabbreviations[i] == inputstate)
+	   {
+			return i;
+		}
+		   if (states[i].toLowerCase() == inputstate.toLowerCase()){
+		   return i;
+		   }
+	   }
+	   return -1;
+	}
+	function enteredStatesToString(){
+	var x = ""
+		   for (i in inputedstates) {
+		   if(x != ""){
+		   x = x + ", " + inputedstates[i];
+		   }
+		   else{
+		   x = inputedstates[i];
+		   }
+	   }
+	   return x;
+	}
+	function winner(){
+		var m = sec/60;
+		var s = sec%60;
+		m = parseInt(m);
+		s = parseInt(s);
+		m = checkTimes(m);
+		s = checkTimes(s);
+		document.getElementById("timer").innerHTML = "YOU WIN! " + m + ":" + s;
+		clearInterval(timer);
+	}
+	function loser(){
+		document.getElementById("timer").innerHTML = "YOU LOST!";
+		clearInterval(timer);
+	}
+	function resetpage(){
+	textbox.focus();
+	document.getElementById("correctstates").innerHTML = "0" + "/50 States  have been entered";
+	document.getElementById("inputedstates").innerHTML = "You have entered: ";
+	var states = ["Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware",
+	"Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa",
+	"Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota",
+	"Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico",
+	"New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island",
+	"South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington",
+	"West Virginia", "Wisconsin", "Wyoming"];
+	var statesabbreviations = ['AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA', 'HI', 'ID', 
+	'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 
+	'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY']
+	var inputedstates = [];
+	var sec = 300;
+	var start = false;
+	var correctStates = 0;
+	clearInterval(timer);
+	}
+	</script>
+	</body>
+	</html>

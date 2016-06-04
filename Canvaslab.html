@@ -1,0 +1,221 @@
+  <!DOCTYPE html>
+  <html>
+  <head>
+    <title>
+      CS Graph
+    </title>
+  </head>
+  <form onsubmit="download()">
+  <body onload="detect()">
+  <button type="button" accesskey="d" onclick="deleteNode();"><u>D</u>elete Node</button>
+  <button type="button" accesskey="t" onclick="Toggle();"><u>T</u>oggle Edges</button>
+  <button type="button" accesskey="r" onclick="clear3();"><u>R</u>estart</button>
+  <input type="submit" value="Download">
+  </form>
+  <span> Enter the data from the downloaded text file 
+  <input type=text name=text id="text">
+  <button type="button" accesskey="u" onclick="upload();"> <u>U</u>pload</button>
+  <hr>
+  <div id = "div1" style="width: 100px; background-color: black; font-size:10pt">
+  <canvas id='canvas' onMouseDown="mouse.d = true;" onClick="mouse.c=true;" style="position:fixed; border: 1px solid black;"></canvas>
+  </div>
+  <br>
+  <script>
+
+  document.documentElement.style.overflow = 'hidden';
+  document.body.scroll = "no";
+
+  var mouse = {x: 0, y: 0, c: false, d: false};
+
+  document.addEventListener('mousemove', function(e) { 
+    mouse.x = (e.clientX || e.pageX) - 7.5; 
+    mouse.y = (e.clientY || e.pageY) - 67.5;
+  }, false);
+
+  var canvas = document.getElementById('canvas');
+  var c = canvas.getContext("2d");
+
+  var nodes = [];
+  var connections = [];
+  var drag = {x: 0, y: 0};
+  var toggle = true;
+  var togglenodes = true;
+
+  function detect() {
+    clear1();
+    if(!mouse.d) {
+      drag.x = mouse.x;
+      drag.y = mouse.y;
+    }
+      if(mouse.c && (Math.abs(drag.x - mouse.x) < 4 && Math.abs(drag.y - mouse.y) < 4)) {
+        var selected = false;
+        for(var i = 0; i < nodes.length; i++) {
+          if(nodes[i][2]) {
+            selected = true;
+            break;
+          }
+        }
+        if(selected) {
+          for(k = 0; k < nodes.length; k++) {
+            nodes[k][2] = false;
+          }
+        } else {
+          var curnode = [mouse.x, mouse.y, false];
+          nodes.push(curnode);
+          connections.push([curnode])
+          if(connections.length > 1){
+            var prevnode = nodes[nodes.length - 2 ];
+            connections[connections.length - 1].push(prevnode)
+            connections[connections.length - 2].push(curnode);
+          }
+        }
+      } else if(mouse.d && (Math.abs(drag.x - mouse.x) >= 4 && Math.abs(drag.y - mouse.y) >= 4)) {
+          c.fillStyle = 'rgba(33, 255, 99, 0.5)';
+          c.fillRect(drag.x, drag.y, mouse.x-drag.x, mouse.y-drag.y);
+          for (var i = 0; i < nodes.length; i++) {
+            if(nodes[i][0] > Math.min(drag.x, mouse.x) &&
+               nodes[i][0] < Math.max(drag.x, mouse.x) &&
+               nodes[i][1] > Math.min(drag.y, mouse.y) &&
+               nodes[i][1] < Math.max(drag.y, mouse.y)) {
+              nodes[i][2] = true;
+           }
+          else {
+             nodes[i][2] = false;
+           }
+        }
+      }
+    if(toggle){
+      for(var i = 0; i < connections.length; i++) {
+        keyarray = connections[i];
+        for(var k = 1; k < keyarray.length; k++){
+          dLine(keyarray[0][0], keyarray[0][1], keyarray[k][0], keyarray[k][1]);
+        }
+      }
+    }
+    if(togglenodes){
+      for(var k = 0; k < nodes.length; k++) {
+        c.beginPath();
+        c.arc(nodes[k][0], nodes[k][1], 7.5, 0, 2*Math.PI);
+        c.strokeStyle = "Black";
+        c.stroke();
+        c.fillStyle = "Blue";
+        if(nodes[k][2]) {
+          c.fillStyle = "Black";
+        }
+        c.fill();
+      }
+    }
+    clear2();
+  }
+
+  setInterval("detect()", 1);
+
+  function clear1() {
+    canvas.left = 0;
+    canvas.top = 0;
+    canvas.width = window.innerWidth - 20;
+    canvas.height = window.innerHeight - 75;
+    c.fillStyle = "White";
+    c.fillRect(0, 0, canvas.width, canvas.height);
+    var div = document.getElementById("div1");
+  }
+  function clear2() {
+    if(mouse.c)mouse.d=false;
+    mouse.c = false;
+  }
+  function clear3() {
+  mouse = {x: 0, y: 0, c: false, d: false};
+  document.addEventListener('mousemove', function(e) { 
+    mouse.x = (e.clientX || e.pageX) - 7.5; 
+    mouse.y = (e.clientY || e.pageY) - 67.5;
+  }, false);
+  nodes = [];
+  drag = {x: 0, y: 0};
+  connections = [];
+  clear1();
+  clear2();
+  }
+function dLine(x1, y1, x2, y2) {
+  c.beginPath();
+  c.moveTo(x1, y1);
+  c.lineTo(x2, y2);
+  c.closePath();
+  c.strokeStyle = "Black";
+  c.stroke();
+}
+
+function select() {
+  for(var i = 0; i < nodes.length; i++) {
+    nodes[i][2] = true;
+  }
+}
+function deleteNode() {
+  var selected = false;
+    for(var i = 0; i < nodes.length; i++) {
+      if(nodes[i][2]) {
+        selected = true;
+        break;
+      }
+    }
+    if(selected) {
+      for(var k = nodes.length - 1; k > -1; k--) {
+        if(nodes[k] != undefined && nodes[k][2]){
+         for(var i = connections[k].length - 1; i > -1; i--){
+          x = nodes.indexOf(connections[k][i]);
+          y = connections[x].indexOf(nodes[k]);
+          connections[x].splice(y, 1)
+         }
+         nodes.splice(k, 1);
+         connections.splice(k, 1);
+       }
+      }
+    } else {
+      alert("Highlight the nodes that you want deleted and then select the delete button");
+    }
+}
+function Toggle(){
+    var selected = false;
+    for(var i = 0; i < nodes.length; i++) {
+      if(nodes[i][2]) {
+        selected = true;
+        break;
+      }
+    }
+    if(selected) {
+      for(var i = nodes.length - 1; i > -1; i--) {
+        if(nodes[i][2]){
+         for(var k = nodes.length - 1; k > -1; k--){
+          var x = connections[i].indexOf(nodes[k]);
+          if(nodes[k][2]){
+            if(x > -1 && (nodes[k] != nodes[i])){
+              connections[i].splice(x, 1);
+            }
+            else{
+              connections[i].push(nodes[k]);
+            }
+          }
+         }
+       }
+      }
+    } else {
+      alert("Highlight nodes where you want the edges deleted or added and then select the toggle button");
+    }
+}
+function download(filename) {
+  var file = document.createElement('a');
+  var text = JSON.stringify(nodes) + "|" + JSON.stringify(connections);
+  file.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+  file.setAttribute('download', 'graph.txt');
+  file.click();
+}
+  function upload() {
+    var text = document.getElementById("text").value;
+    nodes = JSON.parse(text.substring(0, text.indexOf("|")));
+    connections = JSON.parse(text.substring(text.indexOf("|") + 1));
+    document.getElementById("text").value = "";
+  }
+
+</script>
+
+  </body>
+  </html>

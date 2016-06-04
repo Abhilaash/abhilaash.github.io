@@ -1,0 +1,43 @@
+body {
+    font-size:125%;
+    background-color: #ADD8E6;
+    background: -webkit-linear-gradient(left, rgba(255,90,90,1),rgba(114,188,212,1));
+    background: -o-linear-gradient(right, rgba(255,90,90,1),rgba(114,188,212,1));
+    background: -moz-linear-gradient(right, rgba(255,90,90,1),rgba(114,188,212,1));
+    background: linear-gradient(to right, rgba(255,90,90,1),rgba(114,188,212,1));
+}
+
+html{
+    font-family: 'Indie Flower',serif;
+    text-align: center;
+    color: white;
+    font-size: 125%;
+}
+
+#uploadtherecipes{
+font-size: 150%
+}
+
+#button,#submit {
+    background: #65a9d7;
+    border: solid 0px #1e90ff;
+    border-radius: 50px;
+    -moz-border-radius: 50px;
+    -webkit-border-radius: 50px;
+    color: #ffffff;
+    font-size: 100%;
+    font-family: 'Indie Flower',serif;
+    padding: 10px 20px;
+}
+
+#button:hover,#submit:hover{
+    background: #c42f2f;
+}
+
+#button:active,#submit:active{
+    background: #FF9200;
+}
+
+#button:focus,#submit:focus{
+    outline: 0 !important;
+}

@@ -1,0 +1,93 @@
+<!doctype html>
+<html>
+
+<head>
+<h1 align="center">Options Lab</h1>
+<title>
+Options Lab
+</title>
+</head>
+<body onload="def()">
+
+<form action="Display Type" id="radiobuttons">
+
+<div style="width:105px;height:45px;border:3px solid;">
+<input type="radio" onchange="inputtypechange()" name="inputtype" value="DropDown">Drop Down
+<br>
+<input type="radio" onchange="inputtypechange()" name="inputtype" value="ListBox">Listbox
+</div>
+<br >
+
+
+<select onchange="changeOutput()" id="Selector">
+<option value="CallOfDuty">Call Of Duty</option>
+<option value="Halo">Halo</option>
+<option value="Battlefield">Battlefield</option>
+<option value="Monopoly">Monopoly</option>
+<option value="Chess">Chess</option>
+</select>
+
+<select id="Output" size="8">
+
+</select>
+
+</form>
+
+<style>
+#Selector {
+    vertical-align: top;
+    top: 50%
+}
+</style>
+
+<script>
+
+var gamenames = {"CallOfDuty" : 
+["Realistic", "Fun", "Zombies", "Maps", "Friends to play with", "Campaign", "Survival", "All Game Systems"], 
+"Halo" : 
+["Aliens", "Fun", "Vehicles", "Maps", "Extraterrestrial", "Campaign", "Multiplayer Campaign"], 
+"Battlefield" : 
+["Realistic", "Not very fun", "Online", "All game systems"], 
+"Monopoly" : 
+["Fun", "Long", "Luck", "Difficult", "Family Time", "Little Strategy", "Rage Quit", "Board Game"],
+"Chess" : 
+["Fun", "Timetaking", "Strategic", "Competitive", "Board Game"]};
+
+function def() {
+	var characteristic;
+	for(characteristic in gamenames["CallOfDuty"]){
+		document.getElementById("Output").add(new Option(gamenames["CallOfDuty"][characteristic]));	
+	}
+}
+
+function inputtypechange() {
+	var type = document.querySelector('input[name="inputtype"]:checked').value;
+	changeInput(type);
+}
+
+function changeInput(type) {
+	if(type == "DropDown"){
+		document.getElementById("Selector").size="1";
+	}
+	else if(type == "ListBox"){
+		document.getElementById("Selector").size="5";
+	}
+}
+
+function changeOutput(){
+	var characteristic;
+
+	for(characteristic in document.getElementById("Output")){
+		document.getElementById("Output").remove(characteristic);
+	}
+
+	var val = document.getElementById("Selector").value;
+	for(characteristic in gamenames[val]){
+		document.getElementById("Output").add(new Option(gamenames[val][characteristic]));	
+	}
+}
+
+</script>
+
+</body>
+</html>

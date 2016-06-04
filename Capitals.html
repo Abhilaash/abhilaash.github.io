@@ -1,0 +1,205 @@
+	<!doctype html>
+	<html>
+	<head>
+	<style>
+	p{
+	text-align:center;
+	margin-bottom: .25cm;
+	}
+	#timer{
+	margin-top: .35cm;
+	}
+	#currentstate{
+		 font-weight: bold;
+	}
+	</style>
+		<h1 align="center">Name the U.S. capitals <br>
+			<img src="America.png" alt="America" align="middle"></h1>
+			<title>
+				Capitals
+			</title>
+	<script type="text/javascript"> 
+	function stopRKey(evt) {
+	  var evt = (evt) ? evt : ((event) ? event : null); 
+	  var node = (evt.target) ? evt.target : ((evt.srcElement) ? evt.srcElement : null); 
+	  if ((evt.keyCode == 13) && (node.type=="text"))  {return false;} 
+	} 
+	document.onkeypress = stopRKey; 
+	</script>
+	</head>
+	<body onload=loadnewstates()>
+	<p id=currentstate style="font-size:150%"> </p>
+	<p id=inputedcapitals>You have entered: </p>
+	<p id=correctcapitals style="color:red;font-size:125%">0/50 Capitals have been entered</p>	
+	<center>
+	<input type=text name=capitals id="capitals" autofocus oninput="capitalschecker()">
+	<br>
+	<button id='skip' accesskey="s" onclick="skip()" disabled><u>S</u>kip</button>
+	<button accesskey="r" onclick="resetpage()"><u>R</u>eset</button>
+	</center>
+	<p id=timer style="color:blue;font-size:250%">05:00</p>
+	<script type = 'text/javascript'>
+	textbox = document.getElementById("capitals"); 
+	textbox.focus();
+	var capitals = ["Montgomery","Juneau","Phoenix","Little Rock","Sacramento",
+	"Denver","Hartford","Dover","Tallahassee","Atlanta","Honolulu","Boise","Springfield",
+	"Indianapolis","Des Moines","Topeka","Frankfort","Baton Rouge","Augusta","Annapolis",
+	"Boston","Lansing","St. Paul","Jackson","Jefferson City","Helena","Lincoln","Carson City",
+	"Concord","Trenton","Santa Fe","Albany","Raleigh","Bismarck","Columbus","Oklahoma City",
+	"Salem","Harrisburg","Providence","Columbia","Pierre","Nashville","Austin","Salt Lake City"
+	,"Montpelier","Richmond","Olympia","Charleston","Madison","Cheyenne"];
+	var states = ["Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware",
+	"Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa",
+	"Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota",
+	"Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico",
+	"New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island",
+	"South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington",
+	"West Virginia", "Wisconsin", "Wyoming"];
+	var randomnumbers = [];
+	for(var x = 0; x < 50; x++){
+		randomnumbers[x] = x
+	}
+	randomizer(randomnumbers);
+	var inputedcapitals = [];
+	var sec = 300;
+	var start = false;
+	var correctcapitals = 0;
+	var timer;
+	function timerepeater() {
+	  if(!start){
+		document.getElementById("skip").disabled = false;
+		start = true;
+		timer = setInterval(function(){
+		sec--;
+		if(sec < 1){
+			capitalschecker();
+			loser();
+		}
+		var m = sec/60;
+		var s = sec%60;
+		m = parseInt(m);
+		s = parseInt(s);
+		m = checkTimes(m);
+		s = checkTimes(s);
+		document.getElementById("timer").innerHTML = m + ":" + s;},1000);
+		}
+	}
+	function randomizer(){
+		for(var x = 0; x < 100; x++){
+			var num1 = parseInt(Math.random()*50);
+			var num2 = parseInt(Math.random()*50);
+			var temp = randomnumbers[num1];
+			randomnumbers[num1] = randomnumbers[num2];
+			randomnumbers[num2] = temp;
+		}
+		return randomnumbers;
+	}
+	function capitalschecker(){
+		timerepeater();
+		var text = textbox.value.toLowerCase();
+		text = text.trim();
+		if(sec < 1){
+			loser();
+		}
+		if(text == "autolose"){
+		loser();
+		}
+		if(text == "autowin"){
+			winner();
+		}
+		if(capitals[randomnumbers[0]].toLowerCase() == text || 
+			(capitals[randomnumbers[0]].toLowerCase() == "st. paul" && text == "st paul") || 
+			(capitals[randomnumbers[0]].toLowerCase() == "st. paul" && text == "saint paul")){
+		inputedcapitals.push(states[randomnumbers[0]] + ": " + capitals[randomnumbers[0]]);
+		inputedcapitals.sort();
+		var capitalsentered = enteredcapitalsToString();	
+		correctcapitals++;
+		randomnumbers.shift();
+		loadnewstates();
+		document.getElementById("correctcapitals").innerHTML = correctcapitals 
+		+ "/50  Capitals  have been entered";
+		document.getElementById("inputedcapitals").innerHTML = "You have entered: " + capitalsentered;
+		textbox.value = "";
+			if(correctcapitals == 50){
+				winner();
+			}
+		}
+	}
+
+	function loadnewstates(){
+		currentstate = document.getElementById("currentstate"); 
+		currentstate.innerHTML = (states[randomnumbers[0]]);
+	}
+
+	function skip(){
+		var temp = randomnumbers[0];
+		randomnumbers.shift();
+		randomnumbers.push(temp);
+		loadnewstates();
+		textbox.focus();
+		textbox.value = "";
+	}
+
+	function checkTimes(i) {
+		if (i < 10) {i = "0" + i};
+		return i;
+	}
+
+	function arraycontains(inputcapital){
+	   for (i in capitals) {
+		   if (capitals[i].toLowerCase() == inputcapital.toLowerCase()){
+		   return i;
+		   }
+	   }
+	   return -1;
+	}
+	function enteredcapitalsToString(){
+	var x = ""
+		   for (i in inputedcapitals) {
+		   if(x != ""){
+		   x = x + ", " + inputedcapitals[i];
+		   }
+		   else{
+		   x = inputedcapitals[i];
+		   }
+	   }
+	   return x;
+	}
+	function resetpage(){
+	textbox.focus();
+	document.getElementById("correctcapitals").innerHTML = "0" + "/50 Capitals have been entered";
+	document.getElementById("inputedcapitals").innerHTML = "You have entered: ";
+	document.getElementById("currentstate").innerHTML = "";
+	randomizer();
+	var sec = 300;
+	var start = false;
+	correctcapitals = 0;
+	clearInterval(timer);
+	}
+
+	function winner(){
+		var m = sec/60;
+		var s = sec%60;
+		m = parseInt(m);
+		s = parseInt(s);
+		m = checkTimes(m);
+		s = checkTimes(s);
+		document.getElementById("skip").disabled = true;
+		document.getElementById("currentstate").innerHTML = "YOU WIN! " + m + ":" + s;
+		clearInterval(timer);
+	}
+	function loser(){
+		var uninputedstates = [];
+		document.getElementById("skip").disabled = true;
+		for(var x = 0; x < randomnumbers.length; x++){
+			uninputedstates[x] = states[randomnumbers[x]] + ": " + capitals[randomnumbers[x]];
+		}
+		uninputedstates.sort();
+		document.getElementById("currentstate").innerHTML = "YOU LOST! " + uninputedstates;
+		document.getElementById("currentstate").style.fontSize="15px";
+		document.getElement
+		clearInterval(timer);
+	}
+	</script>
+	</body>
+	</html>

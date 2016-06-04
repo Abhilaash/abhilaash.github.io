@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+
+<h1 align="center">CS Graph Lab</h1>
+<title>
+CS Graph Lab
+</title>
+
+<body onload="canvasmaximizer()">
+<canvas id="canvas" style="border:1px solid #000000;" onclick="canvasclick()" ondrag="">
+
+</canvas>
+<script>
+var prevx;
+var prevy;
+var radius=5;
+var nodes = [];
+
+function node(xpos, ypos, previous) {
+    this.x = xpos;
+    this.y = ypos;
+    this.prev = previous;
+}
+
+function canvasmaximizer(){
+	var canvas = document.getElementById("canvas");
+	canvas.width = window.innerWidth - canvas.offsetLeft-20;
+	canvas.height = window.innerHeight - canvas.offsetTop-20;
+}
+
+function canvasclick(){
+ 	var canvas = document.getElementById("canvas");
+	var canvas_context = canvas.getContext("2d");
+	canvas_context.beginPath();
+	var xPosition = event.x - canvas.offsetLeft;
+	var yPosition = event.y - canvas.offsetTop;
+	curnode=new node(xPosition, yPosition, nodes[nodes.length])
+	nodes[nodes.length]=curnode;
+	canvas_context.arc(curnode.x, curnode.y, 5, 0, 2*Math.PI);
+	canvas_context.fillStyle = 'blue';
+	canvas_context.fill();
+	canvas_context.stroke();
+	if(prevx != null && prevy != null){
+		angle=findAngle(prevx, prevy, xPosition, yPosition);
+		lineoffsetx = radius*Math.cos(angle);
+		lineoffsety = radius*Math.sin(angle);
+		canvas_context.moveTo(xPosition+lineoffsetx, yPosition+lineoffsety);
+		canvas_context.lineTo(prevx-lineoffsetx, prevy-lineoffsety);
+		canvas_context.stroke();
+	}
+	prevx = xPosition;
+	prevy = yPosition;
+}
+
+function findAngle(xpos1, ypos1, xpos2, ypos2){
+	dx=xpos2-xpos1;
+	dy=ypos2-ypos1;
+	hypo=Math.sqrt(Math.pow(dx, 2)+Math.pow(dy, 2));
+	opp=dy;
+	return Math.asin(opp/hypo);
+}
+
+function highlight(){
+	
+}
+
+</script>
+
+</body>
+</html>
